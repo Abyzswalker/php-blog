@@ -1,0 +1,19 @@
+{
+    "name": "abyss/blog",
+    "description": "Blog",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Abyzs",
+            "email": "abyzswalker@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "slim/slim": "4.*",
+        "slim/psr7": "^1.5",
+        "twig/twig": "^3.3",
+        "ext-mysqli": "*",
+      "ext-json": "*"
+    }
+}
