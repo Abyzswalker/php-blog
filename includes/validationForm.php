@@ -10,30 +10,26 @@ if ($_POST['data']['login'] && $_POST['data']['password']) {
 //$error = "username/password incorrect";
 $msg = [];
 
+
+$user = $usersQuery->checkUser($login, $pass);
+
+
 switch ($_POST['key']) {
     case 'up':
-        $userCheck = $connection->query("SELECT * FROM `users` WHERE `login` = '$login' AND `pass` = '$pass'");
-        $user = $userCheck->fetch_assoc();
-
         if ($user) {
             $msg['msg'] = 'error';
             echo json_encode($msg);
         } elseif (!$user) {
-            $signUp = $connection->query("
-             INSERT INTO `users` (`login`, `pass`)
-             VALUES('$login', '$pass')");
+            $signUp = $usersQuery->addUser($login, $pass);
 
             $msg['msg'] = 'signUp';
             echo json_encode($msg);
         }
         break;
     case 'in':
-        $signIn = $connection->query("SELECT * FROM `users` WHERE `login` = '$login' AND `pass` = '$pass'");
-        $user = $signIn->fetch_assoc();
-
         if ($user) {
             //3600
-            setcookie('user', $user['login'], time() + 3600, '/');
+            setcookie('user', $user['login'], time() + 36, '/');
             $msg['msg'] = 'signIn';
             echo json_encode($msg);
         } elseif (!$user) {
@@ -44,6 +40,7 @@ switch ($_POST['key']) {
         }
         break;
     case 'logout':
+        var_dump(111);
         //var_dump('kuki', $_COOKIE['user']);
         unset($_COOKIE['user']);
         setcookie('user', null, -1, '/');

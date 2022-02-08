@@ -7,6 +7,7 @@ class Article
     private $connection;
     public $query;
     public $message;
+    public $error;
 
     public function __construct(mysqli $connection)
     {
@@ -57,15 +58,46 @@ class Article
 
     public function publicate($title, $categoryId, $text, $img, $user, $date)
     {
-        $articles = "
+        $this->query = "
              INSERT INTO articles (title, category_id, text, img, author_id, update_date, views)
              VALUES('$title', '$categoryId', '$text', '$img', '$user', '$date', '0')";
 
-         if ($this->connection->query($articles)) {
+         if ($this->connection->query($this->query)) {
              $this->message = "Статья успешно добавлена";
+             return $this->message;
          } else {
-             $this->message = $this->connection->error;
+             $this->error = $this->connection->error;
+             return $this->error;
          }
-         return $this->message;
+    }
+    public function update($title, $categoryId, $text, $img, $date, $articleId)
+    {
+        $this->query = "
+             UPDATE articles
+             SET title = '$title', category_id = '$categoryId', text = '$text', img = '$img', update_date = '$date'
+             WHERE id = '$articleId'";
+
+        if ($this->connection->query($this->query)) {
+            $this->message = "Статья успешно обновлена";
+            return $this->message;
+        } else {
+            $this->error = $this->connection->error;
+            return $this->error;
+        }
+    }
+
+    public function delete($articleId)
+    {
+        $this->query = "
+            DELETE FROM articles WHERE id = '$articleId';
+            ";
+
+        if ($this->connection->query($this->query)) {
+            $this->message = "Статья успешно удалена";
+            return $this->message;
+        } else {
+            $this->error = $this->connection->error;
+            return $this->error;
+        }
     }
 }

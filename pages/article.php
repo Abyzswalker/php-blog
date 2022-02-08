@@ -105,12 +105,11 @@ if (!$article) {
             </div>
             <div class="modal-body">
                 <form id="formUpdate" class="formUpdate" action="../includes/validationPublicate.php" method="post" enctype="multipart/form-data">
-                    <input type="text" class="form-control" name="title" id="articleTitle" placeholder="Title" value="<?php echo $article['title'] ?>">
-                    <textarea type="textarea" class="form-control" name="text" id="articleText" placeholder="Text" style="margin-top: 10px">
+                    <input type="text" class="form-control" name="title" id="articleTitle" placeholder="Title" value="<?php echo $article['title'] ?>" required>
+                    <textarea type="textarea" class="form-control" name="text" id="articleText" placeholder="Text" style="margin-top: 10px" required>
                         <?php echo trim($article['text']) ?>
                     </textarea>
                     <select type="select" class="select-category" name="category" id="select-category" style="margin-top: 10px">
-                        <option value = "3" selected = "selected"><?php echo $categoryTitle ?></ option>
                         <?php
                         foreach ($allArticleCategory as $allCat)
                         {

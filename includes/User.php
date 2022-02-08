@@ -7,9 +7,24 @@ class User
     private $connection;
     public $user;
 
+
     public function __construct(mysqli $connection)
     {
         $this->connection = $connection;
+    }
+
+    public function addUser($login, $pass)
+    {
+        $this->user = $this->connection->query("
+             INSERT INTO `users` (`login`, `pass`)
+             VALUES('$login', '$pass')");
+    }
+
+    public function checkUser($login, $pass)
+    {
+        $this->user = $this->connection->query("SELECT * FROM `users` WHERE `login` = '$login' AND `pass` = '$pass'");
+
+        return $this->user->fetch_assoc();
     }
 
     public function allUsers()

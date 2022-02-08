@@ -35,7 +35,7 @@
                 </form>
             </ul>
             <?php
-            if (!isset($_COOKIE['user']))
+            if (empty($_COOKIE['user']))
             {
             ?>
             <div class="btn-group">

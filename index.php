@@ -8,6 +8,7 @@ $countArticles = $articlesRow->countArticles();
 
 
 $count = ceil($countArticles[0] / 2);
+
 ?>
 
 <!doctype html>
@@ -74,7 +75,8 @@ if (!isset($_GET['category']) && !isset($_GET['q'])) {
                     </div>
                 </div>
             </article>
-        <?php endforeach; ?>
+        <?php endforeach;
+        if ($countArticles[0] > 2): ?>
         <div class="afterPosts" style="text-align: center">
             <a id="loadMore" type="button" name="loadMore" class="btn btn-outline-secondary loadMore" data-page="1" data-max="<?php echo $count; ?>">
                 Load more
@@ -84,6 +86,7 @@ if (!isset($_GET['category']) && !isset($_GET['q'])) {
         </div>
     </div>
     <?php
+    endif;
 } elseif (!empty($_GET['category'])) {
     $categoryId = $_GET['category'];
     $articlesOnCategoryRow = new Article($connection);
@@ -141,7 +144,8 @@ if (!isset($_GET['category']) && !isset($_GET['q'])) {
                     </div>
                 </div>
             </article>
-        <?php endforeach; ?>
+        <?php endforeach;
+        if ($countArticles[0] > 2): ?>
         <div class="afterPosts" style="text-align: center">
             <a id="loadMore" type="button" name="loadMore" class="btn btn-outline-secondary loadMore" data-cat="<?php echo $categoryId; ?>" data-page="1" data-max="<?php echo $count; ?>">
                 Load more
@@ -151,6 +155,7 @@ if (!isset($_GET['category']) && !isset($_GET['q'])) {
         </div>
     </div>
     <?php
+    endif;
 } elseif ($_GET['q']) {
     $searchQuery = $_GET['q'];
     $searchOnArt = $articlesRow->serchOnArticle($searchQuery);
