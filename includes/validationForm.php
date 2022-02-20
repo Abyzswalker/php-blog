@@ -7,21 +7,19 @@ if ($_POST['data']['login'] && $_POST['data']['password']) {
     $pass = filter_var(trim($_POST['data']['password']), FILTER_SANITIZE_STRING);
     $pass = md5($pass."test12345");
 }
-//$error = "username/password incorrect";
+
 $msg = [];
 
 
-$user = $usersQuery->checkUser($login, $pass);
-
+$user = $usersQuery->checkUser($login);
 
 switch ($_POST['key']) {
     case 'up':
         if ($user) {
-            $msg['msg'] = 'error';
+            $msg['msg'] = 'User Error';
             echo json_encode($msg);
         } elseif (!$user) {
-            $signUp = $usersQuery->addUser($login, $pass);
-
+            $usersQuery->addUser($login, $pass);
             $msg['msg'] = 'signUp';
             echo json_encode($msg);
         }
@@ -29,7 +27,7 @@ switch ($_POST['key']) {
     case 'in':
         if ($user) {
             //3600
-            setcookie('user', $user['login'], time() + 36, '/');
+            setcookie('user', $user['login'], time() + 3600, '/');
             $msg['msg'] = 'signIn';
             echo json_encode($msg);
         } elseif (!$user) {
@@ -40,7 +38,6 @@ switch ($_POST['key']) {
         }
         break;
     case 'logout':
-        var_dump(111);
         //var_dump('kuki', $_COOKIE['user']);
         unset($_COOKIE['user']);
         setcookie('user', null, -1, '/');

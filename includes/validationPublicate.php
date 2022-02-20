@@ -1,6 +1,7 @@
 <?php
 
-require_once 'db.php';
+include_once 'db.php';
+
 
 if (!empty($_COOKIE['user'])) {
     $userLogin = $_COOKIE['user'];
@@ -25,10 +26,8 @@ if (!empty($_POST['category'])) {
 }
 
 $today = date("Y-m-d H:i:s");
-
 $articleRow = new Article($connection);
 $user = $usersQuery->getUserByName($userLogin);
-
 
 if ($_FILES) {
     $imgName = $_FILES['img']['name'];
@@ -40,22 +39,45 @@ if ($_FILES) {
 if ($_COOKIE['user']) {
     switch ($_POST['form']) {
         case 'publicate':
+            if ($categoryId == '') {
+                $categoryId = $articleCategoryRow->addCategory($_POST['newCategory']);
+                if ($categoryId['error']) {
+                    echo $categoryId['error'];
+
+                    header("Refresh: 3;http://localhost:8081/pages/article.php?id=" . $articleId);
+
+                    exit();
+                }
+            }
+
             $article = $articleRow->publicate($title, $categoryId, $text, $img, $user['id'], $today);
             $articleId = $connection->insert_id;
             if ($articleId) {
-                header("Refresh: 3;http://blog/pages/article.php?id=" . $articleId);
+                header("Refresh: 3;http://localhost:8081/pages/article.php?id=" . $articleId);
             }
+
             echo $article;
 
             break;
         case 'update':
+            $articleId = $_POST['articleId'];
             if (!$imgName) {
                 $img = $_POST['articleImg'];
             }
-            $articleId = $_POST['articleId'];
+
+            if ($categoryId == '') {
+                $categoryId = $articleCategoryRow->addCategory($_POST['newCategory']);
+                if ($categoryId['error']) {
+                    echo $categoryId['error'];
+
+                    header("Refresh: 3;http://localhost:8081/pages/article.php?id=" . $articleId);
+
+                    exit();
+                }
+            }
             $article = $articleRow->update($title, $categoryId, $text, $img, $today, $articleId);
 
-            header("Refresh: 3;http://blog/pages/article.php?id=" . $articleId);
+            header("Refresh: 3;http://localhost:8081/pages/article.php?id=" . $articleId);
 
             echo $article;
 
@@ -64,7 +86,7 @@ if ($_COOKIE['user']) {
             $articleId = $_POST['articleId'];
             $article = $articleRow->delete($articleId);
 
-            header("Refresh: 3;http://blog");
+            header("Refresh: 3;http://localhost:8081");
 
             echo $article;
             break;

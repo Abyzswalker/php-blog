@@ -119,9 +119,10 @@
             </div>
             <div class="modal-body">
                 <form id="formPublicate" class="formPublicate" action="../includes/validationPublicate.php" method="post" enctype="multipart/form-data">
-                    <input type="text" class="form-control" name="title" id="articleTitle" placeholder="Title">
-                    <textarea type="textarea" class="form-control" name="text" id="articleText" placeholder="Text" style="margin-top: 10px"></textarea>
-                    <select type="select" class="select-category" name="category" id="select-category" style="margin-top: 10px">
+                    <label for="articleTitle"></label><input type="text" class="form-control" name="title" id="articleTitle" placeholder="Title">
+                    <label for="articleText"></label><textarea type="textarea" class="form-control" name="text" id="articleText" placeholder="Text" style="margin-top: 10px"></textarea>
+                    <label for="select-category"></label><select type="select" class="select-category" name="category" id="select-category" style="margin-top: 10px">
+                        <option><?php echo ''?></option>
                         <?php
                         foreach ($allArticleCategory as $cat)
                         {
@@ -131,6 +132,7 @@
                         }
                         ?>
                     </select>
+                    <input type="newCategory" class="form-control" name="newCategory" id="articleTitle" placeholder="add category">
                     <label>IMG</label>
                     <input class="form-control" type="file" name="img" id="loadArticleImg">
                     <input class="form-control" type="hidden" name="form" value="publicate">

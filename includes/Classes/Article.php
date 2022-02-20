@@ -21,7 +21,11 @@ class Article
         }
         $this->query = $this->connection->query("SELECT * FROM `articles` WHERE id > 0 ORDER BY update_date DESC LIMIT " . $filter);
 
-        return $this->query->fetch_all(MYSQLI_ASSOC);
+        if($this->query && $this->query->num_rows>0){
+            return $this->query->fetch_all(MYSQLI_ASSOC);
+        } else {
+            return [];
+        }
     }
 
     public function articleOnCategory($categoryId, $start = 0, $limit = 999)

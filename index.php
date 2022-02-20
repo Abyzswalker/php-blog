@@ -6,7 +6,6 @@ $articlesRow = new Article($connection);
 $allArticles = $articlesRow->allArticles(0, 2);
 $countArticles = $articlesRow->countArticles();
 
-
 $count = ceil($countArticles[0] / 2);
 
 ?>
@@ -32,7 +31,14 @@ if (!isset($_GET['category']) && !isset($_GET['q'])) {
     ?>
     <div class="last-articles"><h3>Last publications</h3></div>
     <div class="showMore" id="showMore">
-        <?php foreach ($allArticles as $row): ?>
+    <?php if (count($allArticles) <= 0) { ?>
+        <div class="container">
+            <div class="post-header">
+                <h1>Нет статей</h1>
+            </div>
+        </div>
+    <?php } else {
+        foreach ($allArticles as $row): ?>
             <article class="article" id="article">
                 <div class="card mb-3">
                     <div class="row g-0">
@@ -75,33 +81,44 @@ if (!isset($_GET['category']) && !isset($_GET['q'])) {
                     </div>
                 </div>
             </article>
-        <?php endforeach;
+        <?php
+        endforeach;
         if ($countArticles[0] > 2): ?>
-        <div class="afterPosts" style="text-align: center">
-            <a id="loadMore" type="button" name="loadMore" class="btn btn-outline-secondary loadMore" data-page="1" data-max="<?php echo $count; ?>">
-                Load more
-                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                <span class="visually-hidden">Loading...</span>
-            </a>
-        </div>
-    </div>
-    <?php
-    endif;
+            <div class="afterPosts" style="text-align: center">
+                <a id="loadMore" type="button" name="loadMore" class="btn btn-outline-secondary loadMore" data-page="1"
+                   data-max="<?php echo $count; ?>">
+                    Load more
+                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    <span class="visually-hidden">Loading...</span>
+                </a>
+            </div>
+            </div>
+        <?php
+        endif;
+    }
 } elseif (!empty($_GET['category'])) {
     $categoryId = $_GET['category'];
     $articlesOnCategoryRow = new Article($connection);
     $articlesOnCategory = $articlesOnCategoryRow->articleOnCategory($categoryId, 0, 2);
 
     $categoryTitle = '';
+
     foreach ($allArticleCategory as $cat) {
         if ($cat['id'] == $categoryId) {
             $categoryTitle = $cat['title'];
         }
-    }
-    ?>
+    } ?>
     <div class="last-articles"><h3><?php echo $categoryTitle ?></h3></div>
     <div class="showMore" id="showMore">
-        <?php foreach ($articlesOnCategory as $row): ?>
+    <?php if (count($articlesOnCategory) <= 0) { ?>
+        <div class="container">
+            <div class="post-header">
+                <h1>В данной категории нет статей</h1>
+            </div>
+        </div>
+        <?php
+    } else {
+        foreach ($articlesOnCategory as $row): ?>
             <article class="article">
                 <div class="card mb-3">
                     <div class="row g-0">
@@ -156,6 +173,7 @@ if (!isset($_GET['category']) && !isset($_GET['q'])) {
     </div>
     <?php
     endif;
+    }
 } elseif ($_GET['q']) {
     $searchQuery = $_GET['q'];
     $searchOnArt = $articlesRow->serchOnArticle($searchQuery);

@@ -20,9 +20,9 @@ class User
              VALUES('$login', '$pass')");
     }
 
-    public function checkUser($login, $pass)
+    public function checkUser($login)
     {
-        $this->user = $this->connection->query("SELECT * FROM `users` WHERE `login` = '$login' AND `pass` = '$pass'");
+        $this->user = $this->connection->query("SELECT * FROM `users` WHERE `login` = '$login'");
 
         return $this->user->fetch_assoc();
     }

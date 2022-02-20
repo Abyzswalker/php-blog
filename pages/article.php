@@ -1,13 +1,10 @@
 <?php
 
-require_once '../includes/config.php';
 require_once '../includes/db.php';
-require_once '../includes/Article.php';
-require_once '../includes/User.php';
 
-//spl_autoload_register(function ($class_name) {
-//    include '../includes/' . $class_name . '.php';
-//});
+spl_autoload_register(function ($class_name) {
+    include '../includes/Classes/' . $class_name . '.php';
+});
 
 $articleRow = new Article($connection);
 $usersRow = new User($connection);
@@ -105,11 +102,12 @@ if (!$article) {
             </div>
             <div class="modal-body">
                 <form id="formUpdate" class="formUpdate" action="../includes/validationPublicate.php" method="post" enctype="multipart/form-data">
-                    <input type="text" class="form-control" name="title" id="articleTitle" placeholder="Title" value="<?php echo $article['title'] ?>" required>
-                    <textarea type="textarea" class="form-control" name="text" id="articleText" placeholder="Text" style="margin-top: 10px" required>
+                    <label for="articleTitle"></label><input type="text" class="form-control" name="title" id="articleTitle" placeholder="Title" value="<?php echo $article['title'] ?>" required>
+                    <label for="articleText"></label><textarea type="textarea" class="form-control" name="text" id="articleText" placeholder="Text" style="margin-top: 10px" required>
                         <?php echo trim($article['text']) ?>
                     </textarea>
-                    <select type="select" class="select-category" name="category" id="select-category" style="margin-top: 10px">
+                    <label for="select-category"></label><select type="select" class="select-category" name="category" id="select-category" style="margin-top: 10px">
+                        <option><?php echo ''?></option>
                         <?php
                         foreach ($allArticleCategory as $allCat)
                         {
@@ -119,6 +117,7 @@ if (!$article) {
                         }
                         ?>
                     </select>
+                    <input type="newCategory" class="form-control" name="newCategory" id="articleTitle" placeholder="add category">
                     <label>IMG</label>
                     <input class="form-control" type="file" name="img" id="loadArticleImg">
                     <input class="form-control" type="hidden" name="form" value="update">

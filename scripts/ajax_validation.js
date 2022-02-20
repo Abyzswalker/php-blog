@@ -13,7 +13,7 @@ $(document).ready(function() {
             $('#passwordIn').after('<span style="color: red" class="error">This field is required.</span>');
         }
         if (password.length < 6) {
-            $('#passwordIn').after('<span style="color: red" class="error">Password must be atleast 8 characterslong. </span>');
+            $('#passwordIn').after('<span style="color: red" class="error">Password must be atleast 6 characterslong. </span>');
         }
 
         var data = {};
@@ -43,8 +43,8 @@ $(document).ready(function() {
         }
     });
 
-
     $('#formSignUp').submit(function (e) {
+        console.log(111)
         e.preventDefault();
         var login = $('#loginUp').val();
         var password = $('#passwordUp').val();
@@ -58,7 +58,7 @@ $(document).ready(function() {
             $('#passwordUp').after('<span style="color: red" class="error">This field is required.</span>');
         }
         if (password.length < 6) {
-            $('#passwordUp').after('<span style="color: red" class="error">Password must be atleast 8 characterslong. </span>');
+            $('#passwordUp').after('<span style="color: red" class="error">Password must be atleast 6 characterslong. </span>');
         }
 
         var data = {};
@@ -66,8 +66,7 @@ $(document).ready(function() {
         data["login"] = login;
         data["password"] = password;
 
-
-        if (login !== '' && password !== '') {
+        if (login > 4 || password > 6) {
             $.ajax({
                 type: 'post',
                 url: '../includes/validationForm.php',
@@ -81,11 +80,13 @@ $(document).ready(function() {
 
                     if (resp.msg === 'signUp') {
                         window.location.reload()
-                    } else if (resp.msg === 'error') {
+                    } else if (resp.msg === 'User Error') {
                         $('#formSignUp').after('<span style="color: red" class="error">This user already exists. </span>');
                     }
                 }
             })
+        } else {
+            $('#formSignUp').after('<span style="color: red" class="error">Incorrect login or password. </span>');
         }
     });
 

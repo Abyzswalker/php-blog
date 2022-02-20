@@ -3,7 +3,7 @@
 require 'config.php';
 
 spl_autoload_register(function ($class_name) {
-    include $class_name . '.php';
+    include 'Classes/' . $class_name . '.php';
 });
 
 $database = new Database(
@@ -12,6 +12,7 @@ $database = new Database(
     $config['db']['password'],
     $config['db']['name']
 );
+
 $connection = $database->dbConnect();
 
 $articleCategoryRow = new Category($connection);
