@@ -36,10 +36,10 @@ $(document).ready(function () {
         });
 
         $target.attr('data-page', page);
+        console.log(page, $target.attr('data-max'))
         if (page ==  $target.attr('data-max')) {
             $target.hide();
-            //$('#passwordUp').after('<span style="color: red" class="error">Password must be atleast 8 characterslong. </span>');
+            $('#loadMore').after('<span style="color: red" class="error">Статей не найдено.</span>');
         }
-
     })
 });

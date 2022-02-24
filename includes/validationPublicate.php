@@ -8,21 +8,41 @@ if (!empty($_COOKIE['user'])) {
 }
 if (!empty($_POST['title'])) {
     $title = trim($_POST['title']);
+    $title = htmlspecialchars($title);
 }
 if (!empty($_POST['text'])) {
     $text = trim($_POST['text']);
+    $text = htmlspecialchars($text);
 }
-if (!empty($_POST['category'])) {
-    $categoryTitle = $_POST['category'];
 
-    $categoryId = '';
+$categoryId = '';
+
+if (!empty($_POST['category']) && empty($_POST['newCategory'])) {
+    $categoryTitle = htmlspecialchars($_POST['category']);
+
     if ($categoryTitle) {
         foreach ($allArticleCategory as $cat) {
             if ($cat['title'] == $categoryTitle) {
-                $categoryId = $cat['id'];
+                $categoryId = intval($cat['id']);
             }
         }
     }
+} elseif (empty($_POST['category']) && !empty($_POST['newCategory'])) {
+    $categoryTitle = htmlspecialchars($_POST['newCategory']);
+    $categoryId = $articleCategoryRow->addCategory($_POST['newCategory']);
+
+    if ($categoryId['error']) {
+        echo $categoryId['error'];
+
+        header("Refresh: 3;http://localhost:8081/pages/article.php?id=" . $articleId);
+
+        exit();
+    }
+} elseif (empty($_POST['category']) && empty($_POST['newCategory']) && $_POST['form'] !== 'delete') {
+    echo 'Выбрано 2 категории';
+
+    header("Refresh: 3;http://localhost:8081/pages/article.php?id=" . $articleId);
+    exit();
 }
 
 $today = date("Y-m-d H:i:s");
@@ -39,17 +59,6 @@ if ($_FILES) {
 if ($_COOKIE['user']) {
     switch ($_POST['form']) {
         case 'publicate':
-            if ($categoryId == '') {
-                $categoryId = $articleCategoryRow->addCategory($_POST['newCategory']);
-                if ($categoryId['error']) {
-                    echo $categoryId['error'];
-
-                    header("Refresh: 3;http://localhost:8081/pages/article.php?id=" . $articleId);
-
-                    exit();
-                }
-            }
-
             $article = $articleRow->publicate($title, $categoryId, $text, $img, $user['id'], $today);
             $articleId = $connection->insert_id;
             if ($articleId) {
@@ -63,17 +72,6 @@ if ($_COOKIE['user']) {
             $articleId = $_POST['articleId'];
             if (!$imgName) {
                 $img = $_POST['articleImg'];
-            }
-
-            if ($categoryId == '') {
-                $categoryId = $articleCategoryRow->addCategory($_POST['newCategory']);
-                if ($categoryId['error']) {
-                    echo $categoryId['error'];
-
-                    header("Refresh: 3;http://localhost:8081/pages/article.php?id=" . $articleId);
-
-                    exit();
-                }
             }
             $article = $articleRow->update($title, $categoryId, $text, $img, $today, $articleId);
 

@@ -7,7 +7,6 @@ $allArticles = $articlesRow->allArticles(0, 2);
 $countArticles = $articlesRow->countArticles();
 
 $count = ceil($countArticles[0] / 2);
-
 ?>
 
 <!doctype html>
@@ -81,6 +80,7 @@ if (!isset($_GET['category']) && !isset($_GET['q'])) {
                     </div>
                 </div>
             </article>
+            </div>
         <?php
         endforeach;
         if ($countArticles[0] > 2): ?>
@@ -91,7 +91,6 @@ if (!isset($_GET['category']) && !isset($_GET['q'])) {
                     <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                     <span class="visually-hidden">Loading...</span>
                 </a>
-            </div>
             </div>
         <?php
         endif;
@@ -161,6 +160,7 @@ if (!isset($_GET['category']) && !isset($_GET['q'])) {
                     </div>
                 </div>
             </article>
+            </div>
         <?php endforeach;
         if ($countArticles[0] > 2): ?>
         <div class="afterPosts" style="text-align: center">
@@ -170,7 +170,6 @@ if (!isset($_GET['category']) && !isset($_GET['q'])) {
                 <span class="visually-hidden">Loading...</span>
             </a>
         </div>
-    </div>
     <?php
     endif;
     }

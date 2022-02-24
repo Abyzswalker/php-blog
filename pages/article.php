@@ -112,7 +112,7 @@ if (!$article) {
                         foreach ($allArticleCategory as $allCat)
                         {
                             ?>
-                            <option><?php echo $allCat['title']?></option>
+                            <option selected><?php echo $allCat['title']?></option>
                             <?php
                         }
                         ?>

@@ -6,14 +6,12 @@ $(document).ready(function() {
 
         $(".error").remove();
 
-        if (login.length < 1) {
-            $('#loginIn').after('<span style="color: red" class="error">This field is required.</span>');
+        if (login.length < 4) {
+            $('#loginIn').after('<span style="color: red" class="error">Login must be atleast 6 characterslong.</span>');
         }
-        if (password.length < 1) {
-            $('#passwordIn').after('<span style="color: red" class="error">This field is required.</span>');
-        }
+
         if (password.length < 6) {
-            $('#passwordIn').after('<span style="color: red" class="error">Password must be atleast 6 characterslong. </span>');
+            $('#passwordIn').after('<span style="color: red" class="error">Password must be atleast 6 characterslong.</span>');
         }
 
         var data = {};
@@ -36,7 +34,7 @@ $(document).ready(function() {
                     if (resp.msg === 'signIn') {
                         window.location.reload()
                     } else if (resp.msg === 'error') {
-                        $('#formSignIn').after('<span style="color: red" class="error">Username/Password incorrect. </span>');
+                        $('#formSignIn').after('<span style="color: red" class="error">Username/Password incorrect.</span>');
                     }
                 }
             })
@@ -44,21 +42,18 @@ $(document).ready(function() {
     });
 
     $('#formSignUp').submit(function (e) {
-        console.log(111)
         e.preventDefault();
         var login = $('#loginUp').val();
         var password = $('#passwordUp').val();
 
         $(".error").remove();
 
-        if (login.length < 1) {
-            $('#loginUp').after('<span style="color: red" class="error">This field is required.</span>');
+        if (login.length < 4) {
+            $('#loginUp').after('<span style="color: red" class="error">Login must be atleast 4 characterslong.</span>');
         }
-        if (password.length < 1) {
-            $('#passwordUp').after('<span style="color: red" class="error">This field is required.</span>');
-        }
+
         if (password.length < 6) {
-            $('#passwordUp').after('<span style="color: red" class="error">Password must be atleast 6 characterslong. </span>');
+            $('#passwordUp').after('<span style="color: red" class="error">Password must be atleast 6 characterslong.</span>');
         }
 
         var data = {};
@@ -66,7 +61,7 @@ $(document).ready(function() {
         data["login"] = login;
         data["password"] = password;
 
-        if (login > 4 || password > 6) {
+        if (login.length > 4 || password.length > 6) {
             $.ajax({
                 type: 'post',
                 url: '../includes/validationForm.php',
@@ -89,7 +84,6 @@ $(document).ready(function() {
             $('#formSignUp').after('<span style="color: red" class="error">Incorrect login or password. </span>');
         }
     });
-
 
     $('#logout').submit(function (e) {
         e.preventDefault();

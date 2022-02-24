@@ -15,10 +15,10 @@ class Category
 
     public function addCategory($title)
     {
-        $category = "
-             SELECT * FROM `articles_categories` WHERE title = " . $title;
+        $this->query = $this->connection->query(
+             "SELECT * FROM `articles_categories` WHERE `title` = '$title'");
 
-        if ($category) {
+        if ($this->query->fetch_row() !== null) {
             $this->error['error'] = 'Данная категория уже существует';
             return $this->error;
         } else {

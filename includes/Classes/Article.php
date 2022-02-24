@@ -16,9 +16,12 @@ class Article
 
     public function allArticles($start = 0, $limit = 999)
     {
-        if ($start or $limit) {
+        if ($start || $limit) {
             $filter = (int) $start . ',' . (int) $limit;
         }
+
+        //$query = "SELECT * FROM `articles` WHERE id > 0 ORDER BY update_date DESC LIMIT ";
+
         $this->query = $this->connection->query("SELECT * FROM `articles` WHERE id > 0 ORDER BY update_date DESC LIMIT " . $filter);
 
         if($this->query && $this->query->num_rows>0){
@@ -30,7 +33,7 @@ class Article
 
     public function articleOnCategory($categoryId, $start = 0, $limit = 999)
     {
-        if ($start or $limit) {
+        if ($start || $limit) {
             $filter = (int) $start . ',' . (int) $limit;
         }
         $this->query = $this->connection->query("SELECT * FROM `articles` WHERE `category_id` =" . (int) $categoryId . ' ' . "ORDER BY update_date DESC LIMIT " . $filter);
@@ -40,17 +43,21 @@ class Article
 
     public function countArticles()
     {
-        $this->query = $this->connection->query("SELECT count(*) FROM `articles` WHERE id > 0");
+        $this->query = $this->connection->query("SELECT count(id) FROM `articles` WHERE id > 0");
 
         return $this->query->fetch_row();
     }
 
     public function serchOnArticle($searchQuery = '')
     {
-        $searchQuery = '%' . $searchQuery . '%';
-        $this->query = $this->connection->query("SELECT * FROM `articles` WHERE `title` LIKE" . "'$searchQuery'");
+        $stmt = $this->connection->prepare("SELECT * FROM articles WHERE `title` LIKE ?");
 
-        return $this->query->fetch_all(MYSQLI_ASSOC);
+        $stmt->execute(["%$searchQuery%"]);
+
+        $result = $stmt->get_result();
+
+        return $this->query = $result->fetch_all(MYSQLI_ASSOC);
+
     }
 
     public function getArticle($articleId)
@@ -62,26 +69,32 @@ class Article
 
     public function publicate($title, $categoryId, $text, $img, $user, $date)
     {
-        $this->query = "
+        $this->query = $this->connection->prepare("
              INSERT INTO articles (title, category_id, text, img, author_id, update_date, views)
-             VALUES('$title', '$categoryId', '$text', '$img', '$user', '$date', '0')";
+             VALUES(?, ?, ?, ?, ?, ?, ?)");
 
-         if ($this->connection->query($this->query)) {
-             $this->message = "Статья успешно добавлена";
-             return $this->message;
-         } else {
-             $this->error = $this->connection->error;
-             return $this->error;
-         }
+        $views = 0;
+
+        $this->query->bind_param('sissisi', $title, $categoryId, $text, $img, $user, $date, $views);
+
+       if ($this->query->execute() == true) {
+           $this->message = "Статья успешно добавлена";
+           return $this->message;
+       } else {
+           $this->error = $this->connection->error;
+           return $this->error;
+       }
     }
     public function update($title, $categoryId, $text, $img, $date, $articleId)
     {
-        $this->query = "
-             UPDATE articles
-             SET title = '$title', category_id = '$categoryId', text = '$text', img = '$img', update_date = '$date'
-             WHERE id = '$articleId'";
+        $this->query = $this->connection->prepare("
+             UPDATE articles 
+             SET title = ?, category_id = ?, text = ?, img = ?, update_date = ?
+             WHERE id = ?");
 
-        if ($this->connection->query($this->query)) {
+        $this->query->bind_param('sisssi', $title, $categoryId, $text, $img, $date, $articleId);
+
+        if ($this->query->execute() == true) {
             $this->message = "Статья успешно обновлена";
             return $this->message;
         } else {
