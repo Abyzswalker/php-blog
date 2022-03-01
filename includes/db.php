@@ -15,8 +15,8 @@ $database = new Database(
 
 $connection = $database->dbConnect();
 
-$articleCategoryRow = new Category($connection);
+$articleCategoryRow = new Categories($connection);
 $allArticleCategory = $articleCategoryRow->allCategory();
 
-$usersQuery = new User($connection);
+$usersQuery = new Users($connection);
 $users = $usersQuery->allUsers();

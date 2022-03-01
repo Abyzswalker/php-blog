@@ -6,9 +6,9 @@ spl_autoload_register(function ($class_name) {
     include '../includes/Classes/' . $class_name . '.php';
 });
 
-$articleRow = new Article($connection);
-$usersRow = new User($connection);
-$articleCategoryRow = new Category($connection);
+$articleRow = new Articles($connection);
+$usersRow = new Users($connection);
+$articleCategoryRow = new Categories($connection);
 
 if (!empty($_GET['id'])) {
     $article = $articleRow->getArticle($_GET['id']);
@@ -56,6 +56,7 @@ if (!$article) {
     $connection->query("UPDATE `articles` SET `views` = `views` + 1 WHERE `id` = " . (int) $article['id']);
 ?>
 <div class="container">
+    <a type="button" class="btn btn-secondary" href="../index.php">Home</a>
     <div class="post">
         <div class="post-header">
             <h1><?php echo $article['title'] ?></h1>
@@ -102,8 +103,8 @@ if (!$article) {
             </div>
             <div class="modal-body">
                 <form id="formUpdate" class="formUpdate" action="../includes/validationPublicate.php" method="post" enctype="multipart/form-data">
-                    <label for="articleTitle"></label><input type="text" class="form-control" name="title" id="articleTitle" placeholder="Title" value="<?php echo $article['title'] ?>" required>
-                    <label for="articleText"></label><textarea type="textarea" class="form-control" name="text" id="articleText" placeholder="Text" style="margin-top: 10px" required>
+                    <input type="text" class="form-control" name="title" id="articleTitle" placeholder="Title" value="<?php echo $article['title'] ?>" required>
+                    <textarea type="textarea" class="form-control" name="text" id="articleText" placeholder="Text" style="margin-top: 10px" required>
                         <?php echo trim($article['text']) ?>
                     </textarea>
                     <label for="select-category"></label><select type="select" class="select-category" name="category" id="select-category" style="margin-top: 10px">
@@ -117,7 +118,7 @@ if (!$article) {
                         }
                         ?>
                     </select>
-                    <input type="newCategory" class="form-control" name="newCategory" id="articleTitle" placeholder="add category">
+                    <input type="newCategory" class="form-control" name="newCategory" id="articleTitle" placeholder="add new category">
                     <label>IMG</label>
                     <input class="form-control" type="file" name="img" id="loadArticleImg">
                     <input class="form-control" type="hidden" name="form" value="update">

@@ -2,7 +2,7 @@
 
 require_once 'Database.php';
 
-class Category
+class Categories
 {
     private $connection;
     public $error;
@@ -15,8 +15,10 @@ class Category
 
     public function addCategory($title)
     {
-        $this->query = $this->connection->query(
-             "SELECT * FROM `articles_categories` WHERE `title` = '$title'");
+        $stmt = $this->connection->prepare("SELECT * FROM articles_categories WHERE `title` = ?");
+        $stmt->execute(["$title"]);
+
+        $this->query = $stmt->get_result();
 
         if ($this->query->fetch_row() !== null) {
             $this->error['error'] = 'Данная категория уже существует';
@@ -38,10 +40,13 @@ class Category
     public function allCategory($categoryId = null)
     {
         if (isset($categoryId)){
-            $this->query = $this->connection->query("SELECT * FROM `articles_categories` WHERE `id` =" . (int) $categoryId);
+            $stmt = $this->connection->prepare("SELECT * FROM articles_categories WHERE `id` = ?");
+            $stmt->execute(["$categoryId"]);
         } else {
-            $this->query = $this->connection->query("SELECT * FROM `articles_categories` WHERE id > 0");
+            $stmt = $this->connection->prepare("SELECT * FROM articles_categories WHERE `id` > 0");
+            $stmt->execute();
         }
+        $this->query = $stmt->get_result();
 
         return $this->query->fetch_all(MYSQLI_ASSOC);
     }

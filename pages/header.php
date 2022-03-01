@@ -119,22 +119,30 @@
             </div>
             <div class="modal-body">
                 <form id="formPublicate" class="formPublicate" action="../includes/validationPublicate.php" method="post" enctype="multipart/form-data">
-                    <label for="articleTitle"></label><input type="text" class="form-control" name="title" id="articleTitle" placeholder="Title">
-                    <label for="articleText"></label><textarea type="textarea" class="form-control" name="text" id="articleText" placeholder="Text" style="margin-top: 10px"></textarea>
-                    <label for="select-category"></label><select type="select" class="select-category" name="category" id="select-category" style="margin-top: 10px">
-                        <option><?php echo ''?></option>
-                        <?php
-                        foreach ($allArticleCategory as $cat)
-                        {
-                            ?>
-                            <option><?php echo $cat['title'];?></option>
+                    <input type="text" class="form-control" name="title" id="articleTitle" placeholder="Title">
+                    <textarea type="textarea" class="form-control" name="text" id="articleText" placeholder="Text" style="margin-top: 10px"></textarea>
+                    <div id="selectArtCat">
+                        <label for="select-category">Select Categories: </label>
+                        <select type="select" class="select-category" name="category" id="select-category" style="margin-top: 10px">
+                            <option><?php echo ''?></option>
                             <?php
-                        }
-                        ?>
-                    </select>
-                    <input type="newCategory" class="form-control" name="newCategory" id="articleTitle" placeholder="add category">
-                    <label>IMG</label>
-                    <input class="form-control" type="file" name="img" id="loadArticleImg">
+                            foreach ($allArticleCategory as $cat)
+                            {
+                                ?>
+                                <option><?php echo $cat['title'];?></option>
+                                <?php
+                            }
+                            ?>
+                        </select>
+                    </div>
+                    <div id="newCat">
+                        <label for="newCategory">or add new category: </label>
+                        <input type="newCategory" class="form-control" name="newCategory" id="newCategory" placeholder="add category">
+                    </div>
+                    <div id="loadArtImg">
+                        <label for="loadArticleImg">IMG: </label>
+                        <input class="form-control" type="file" name="img" id="loadArticleImg">
+                    </div>
                     <input class="form-control" type="hidden" name="form" value="publicate">
                     <div class="modal-footer">
                         <button form="formPublicate" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

@@ -7,7 +7,7 @@ $limit = 2;
 $page = intval(@$_GET['page']);
 $page = (empty($page)) ? 1 : $page;
 $start = ($page != 1) ? $page * $limit - $limit : 0;
-$articlesRow = new Article($connection);
+$articlesRow = new Articles($connection);
 if (!empty($_GET['catId'])) {
     $nextPageArticle = $articlesRow->articleOnCategory($_GET['catId'], $start, $limit);
 } else {

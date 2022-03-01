@@ -15,38 +15,49 @@ if (!empty($_POST['text'])) {
     $text = htmlspecialchars($text);
 }
 
-$categoryId = '';
 
-if (!empty($_POST['category']) && empty($_POST['newCategory'])) {
-    $categoryTitle = htmlspecialchars($_POST['category']);
 
-    if ($categoryTitle) {
-        foreach ($allArticleCategory as $cat) {
-            if ($cat['title'] == $categoryTitle) {
-                $categoryId = intval($cat['id']);
-            }
-        }
-    }
-} elseif (empty($_POST['category']) && !empty($_POST['newCategory'])) {
-    $categoryTitle = htmlspecialchars($_POST['newCategory']);
-    $categoryId = $articleCategoryRow->addCategory($_POST['newCategory']);
+if (!empty($_POST) && $_POST['key'] == 'cat') {
+    $categoryId = '';
 
-    if ($categoryId['error']) {
-        echo $categoryId['error'];
-
-        header("Refresh: 3;http://localhost:8081/pages/article.php?id=" . $articleId);
-
-        exit();
-    }
-} elseif (empty($_POST['category']) && empty($_POST['newCategory']) && $_POST['form'] !== 'delete') {
-    echo 'Выбрано 2 категории';
-
-    header("Refresh: 3;http://localhost:8081/pages/article.php?id=" . $articleId);
-    exit();
+    //var_dump($_POST);
 }
 
+
+
+
+
+
+//if (!empty($_POST['category']) && empty($_POST['newCategory'])) {
+//    $categoryTitle = htmlspecialchars($_POST['category']);
+//
+//    if ($categoryTitle) {
+//        foreach ($allArticleCategory as $cat) {
+//            if ($cat['title'] == $categoryTitle) {
+//                $categoryId = intval($cat['id']);
+//            }
+//        }
+//    }
+//} elseif (empty($_POST['category']) && !empty($_POST['newCategory'])) {
+//    $categoryTitle = htmlspecialchars($_POST['newCategory']);
+//    $categoryId = $articleCategoryRow->addCategory($_POST['newCategory']);
+//
+//    if ($categoryId['error']) {
+//        echo $categoryId['error'];
+//
+//        //header("Refresh: 3;http://localhost:8081/pages/article.php?id=" . $articleId);
+//
+//        exit();
+//    }
+//} elseif (empty($_POST['category']) && empty($_POST['newCategory']) && $_POST['form'] !== 'delete') {
+//    echo 'Выбрано 2 категории';
+//
+//    header("Refresh: 3;http://localhost:8081/pages/article.php?id=" . $articleId);
+//    exit();
+//}
+
 $today = date("Y-m-d H:i:s");
-$articleRow = new Article($connection);
+$articleRow = new Articles($connection);
 $user = $usersQuery->getUserByName($userLogin);
 
 if ($_FILES) {

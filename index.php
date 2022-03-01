@@ -2,7 +2,7 @@
 
 require_once 'includes/db.php';
 
-$articlesRow = new Article($connection);
+$articlesRow = new Articles($connection);
 $allArticles = $articlesRow->allArticles(0, 2);
 $countArticles = $articlesRow->countArticles();
 
@@ -97,7 +97,7 @@ if (!isset($_GET['category']) && !isset($_GET['q'])) {
     }
 } elseif (!empty($_GET['category'])) {
     $categoryId = $_GET['category'];
-    $articlesOnCategoryRow = new Article($connection);
+    $articlesOnCategoryRow = new Articles($connection);
     $articlesOnCategory = $articlesOnCategoryRow->articleOnCategory($categoryId, 0, 2);
 
     $categoryTitle = '';
@@ -253,6 +253,7 @@ if (!isset($_GET['category']) && !isset($_GET['q'])) {
 <script src="jquery-3.6.0.min.js"></script>
 <script src="/scripts/ajax_pagination.js"></script>
 <script src="/scripts/ajax_validation.js"></script>
+<script src="/scripts/ajax_publicate.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </body>
 </html>
