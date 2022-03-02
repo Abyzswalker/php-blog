@@ -13,30 +13,6 @@ class Categories
         $this->connection = $connection;
     }
 
-    public function addCategory($title)
-    {
-        $stmt = $this->connection->prepare("SELECT * FROM articles_categories WHERE `title` = ?");
-        $stmt->execute(["$title"]);
-
-        $this->query = $stmt->get_result();
-
-        if ($this->query->fetch_row() !== null) {
-            $this->error['error'] = 'Данная категория уже существует';
-            return $this->error;
-        } else {
-            $this->query = "
-             INSERT INTO articles_categories (title)
-             VALUES('$title')";
-
-            if ($this->connection->query($this->query)) {
-                return $this->connection->insert_id;
-            } else {
-                $this->error = $this->connection->error;
-                return $this->error;
-            }
-        }
-    }
-
     public function allCategory($categoryId = null)
     {
         if (isset($categoryId)){
@@ -50,4 +26,28 @@ class Categories
 
         return $this->query->fetch_all(MYSQLI_ASSOC);
     }
+
+//    public function addCategory($title)
+//    {
+//        $stmt = $this->connection->prepare("SELECT * FROM articles_categories WHERE `title` = ?");
+//        $stmt->execute(["$title"]);
+//
+//        $this->query = $stmt->get_result();
+//
+//        if ($this->query->fetch_row() !== null) {
+//            $this->error['error'] = 'Данная категория уже существует';
+//            return $this->error;
+//        } else {
+//            $this->query = "
+//             INSERT INTO articles_categories (title)
+//             VALUES('$title')";
+//
+//            if ($this->connection->query($this->query)) {
+//                return $this->connection->insert_id;
+//            } else {
+//                $this->error = $this->connection->error;
+//                return $this->error;
+//            }
+//        }
+//    }
 }

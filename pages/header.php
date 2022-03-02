@@ -122,9 +122,8 @@
                     <input type="text" class="form-control" name="title" id="articleTitle" placeholder="Title">
                     <textarea type="textarea" class="form-control" name="text" id="articleText" placeholder="Text" style="margin-top: 10px"></textarea>
                     <div id="selectArtCat">
-                        <label for="select-category">Select Categories: </label>
+                        <label for="select-category">Select Category: </label>
                         <select type="select" class="select-category" name="category" id="select-category" style="margin-top: 10px">
-                            <option><?php echo ''?></option>
                             <?php
                             foreach ($allArticleCategory as $cat)
                             {
@@ -134,10 +133,6 @@
                             }
                             ?>
                         </select>
-                    </div>
-                    <div id="newCat">
-                        <label for="newCategory">or add new category: </label>
-                        <input type="newCategory" class="form-control" name="newCategory" id="newCategory" placeholder="add category">
                     </div>
                     <div id="loadArtImg">
                         <label for="loadArticleImg">IMG: </label>

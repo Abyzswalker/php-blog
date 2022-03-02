@@ -107,8 +107,8 @@ if (!$article) {
                     <textarea type="textarea" class="form-control" name="text" id="articleText" placeholder="Text" style="margin-top: 10px" required>
                         <?php echo trim($article['text']) ?>
                     </textarea>
-                    <label for="select-category"></label><select type="select" class="select-category" name="category" id="select-category" style="margin-top: 10px">
-                        <option><?php echo ''?></option>
+                    <label for="select-category">Select Category: </label>
+                    <select type="select" class="select-category" name="category" id="select-category" style="margin-top: 10px">
                         <?php
                         foreach ($allArticleCategory as $allCat)
                         {
@@ -118,7 +118,6 @@ if (!$article) {
                         }
                         ?>
                     </select>
-                    <input type="newCategory" class="form-control" name="newCategory" id="articleTitle" placeholder="add new category">
                     <label>IMG</label>
                     <input class="form-control" type="file" name="img" id="loadArticleImg">
                     <input class="form-control" type="hidden" name="form" value="update">

@@ -6,14 +6,6 @@ $(document).ready(function() {
 
         $(".error").remove();
 
-        if (login.length < 4) {
-            $('#loginIn').after('<span style="color: red" class="error">Login must be atleast 6 characterslong.</span>');
-        }
-
-        if (password.length < 6) {
-            $('#passwordIn').after('<span style="color: red" class="error">Password must be atleast 6 characterslong.</span>');
-        }
-
         var data = {};
 
         data["login"] = login;
@@ -61,7 +53,9 @@ $(document).ready(function() {
         data["login"] = login;
         data["password"] = password;
 
-        if (login.length > 4 || password.length > 6) {
+        if (login.length < 4 || password.length < 6) {
+            $('#formSignUp').after('<span style="color: red" class="error">Incorrect login or password. </span>');
+        } else {
             $.ajax({
                 type: 'post',
                 url: '../includes/validationForm.php',
@@ -80,8 +74,6 @@ $(document).ready(function() {
                     }
                 }
             })
-        } else {
-            $('#formSignUp').after('<span style="color: red" class="error">Incorrect login or password. </span>');
         }
     });
 
