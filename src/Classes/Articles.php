@@ -1,13 +1,15 @@
 <?php
 
-require_once 'Database.php';
+namespace Blog\Classes;
+
+use mysqli;
 
 class Articles
 {
     private $connection;
-    public $query;
-    public $message;
-    public $error;
+    private $query;
+    private $message;
+    private $error;
 
     public function __construct(mysqli $connection)
     {
@@ -36,10 +38,15 @@ class Articles
         return $this->query->fetch_all(MYSQLI_ASSOC);
     }
 
-    public function countArticles()
+    public function countArticles($id = null)
     {
-        $stmt = $this->connection->prepare("SELECT count(id) FROM articles WHERE `id` > 0");
-        $stmt->execute();
+        if ($id === null) {
+            $stmt = $this->connection->prepare("SELECT count(id) FROM articles WHERE `id` > 0");
+            $stmt->execute();
+        } else {
+            $stmt = $this->connection->prepare("SELECT count(id) FROM articles WHERE `category_id` = ?");
+            $stmt->execute(["$id"]);
+        }
         $this->query = $stmt->get_result();
 
         return $this->query->fetch_row();
@@ -63,14 +70,17 @@ class Articles
         return $this->query->fetch_assoc();
     }
 
-    public function publicate($title, $categoryId, $text, $img, $user, $date)
+    public function publicate($title, $categoryId, $text, $img, $user)
     {
+        date_default_timezone_set('Europe/Kiev');
+        $today = date("Y-m-d H:i:s");
         $views = 0;
+
         $stmt = $this->connection->prepare("
              INSERT INTO articles (title, category_id, text, img, author_id, update_date, views)
              VALUES(?, ?, ?, ?, ?, ?, ?)");
 
-        $stmt->bind_param('sissisi', $title, $categoryId, $text, $img, $user, $date, $views);
+        $stmt->bind_param('sissisi', $title, $categoryId, $text, $img, $user, $today, $views);
 
         if ($stmt->execute() == true) {
             $this->message = "Статья успешно добавлена";
@@ -80,14 +90,17 @@ class Articles
             return $this->error;
         }
     }
-    public function update($title, $categoryId, $text, $img, $date, $articleId)
+    public function update($title, $categoryId, $text, $img, $articleId)
     {
+        date_default_timezone_set('Europe/Kiev');
+        $today = date("Y-m-d H:i:s");
+
         $stmt = $this->connection->prepare("
              UPDATE articles 
              SET title = ?, category_id = ?, text = ?, img = ?, update_date = ?
              WHERE id = ?");
 
-        $stmt->bind_param('sisssi', $title, $categoryId, $text, $img, $date, $articleId);
+        $stmt->bind_param('sisssi', $title, $categoryId, $text, $img, $today, $articleId);
 
         if ($stmt->execute() == true) {
             $this->message = "Статья успешно обновлена";

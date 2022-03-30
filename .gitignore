@@ -4,4 +4,4 @@
 .phpunit.result.cache
 .env
 .discovery
-/includes/config.php
+/config.php

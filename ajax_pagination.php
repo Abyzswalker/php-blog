@@ -1,13 +1,24 @@
 <?php
 
-require 'includes/config.php';
-require 'includes/db.php';
+use Blog\Classes\Articles;
+use Blog\Classes\Categories;
+use Blog\Classes\Users;
+
+require_once __DIR__ . '/vendor/autoload.php';
+require_once 'db.php';
+
+$articlesRow = new Articles($connection);
+$usersRow = new Users($connection);
+$articleCategoryRow = new Categories($connection);
 
 $limit = 2;
 $page = intval(@$_GET['page']);
 $page = (empty($page)) ? 1 : $page;
 $start = ($page != 1) ? $page * $limit - $limit : 0;
-$articlesRow = new Articles($connection);
+
+$allArticleCategory = $articleCategoryRow->allCategory();
+$users = $usersRow->allUsers();
+
 if (!empty($_GET['catId'])) {
     $nextPageArticle = $articlesRow->articleOnCategory($_GET['catId'], $start, $limit);
 } else {

@@ -14,7 +14,7 @@ $(document).ready(function() {
         if (login !== '' && password !== '') {
             $.ajax({
                 type: 'post',
-                url: '../includes/validationForm.php',
+                url: '../ajax_validationForm.php',
                 data: {
                     key: 'in',
                     data: data
@@ -58,7 +58,7 @@ $(document).ready(function() {
         } else {
             $.ajax({
                 type: 'post',
-                url: '../includes/validationForm.php',
+                url: '../ajax_validationForm.php',
                 data: {
                     key: 'up',
                     data: data
@@ -70,7 +70,7 @@ $(document).ready(function() {
                     if (resp.msg === 'signUp') {
                         window.location.reload()
                     } else if (resp.msg === 'User Error') {
-                        $('#formSignUp').after('<span style="color: red" class="error">This user already exists. </span>');
+                        $('#formSignUp').after('<span style="color: red" class="error">This login already exists. </span>');
                     }
                 }
             })
@@ -81,7 +81,7 @@ $(document).ready(function() {
         e.preventDefault();
             $.ajax({
                 type: 'post',
-                url: '../includes/validationForm.php',
+                url: '../ajax_validationForm.php',
                 data: {
                     key: 'logout',
                 },

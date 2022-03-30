@@ -1,6 +1,17 @@
 <?php
 
-include_once 'db.php';
+use Blog\Classes\Articles;
+use Blog\Classes\Categories;
+use Blog\Classes\Users;
+
+require_once __DIR__ . '/vendor/autoload.php';
+require_once 'db.php';
+
+$articleRow = new Articles($connection);
+$usersRow = new Users($connection);
+$articleCategoryRow = new Categories($connection);
+
+$allArticleCategory = $articleCategoryRow->allCategory();
 
 if (!empty($_COOKIE['user'])) {
     $userLogin = $_COOKIE['user'];
@@ -27,9 +38,7 @@ if (!empty($_POST['category'])) {
     }
 }
 
-$today = date("Y-m-d H:i:s");
-$articleRow = new Articles($connection);
-$user = $usersQuery->getUserByName($userLogin);
+$user = $usersRow->getUserByName($userLogin);
 
 if ($_FILES) {
     $imgName = $_FILES['img']['name'];
@@ -41,7 +50,7 @@ if ($_FILES) {
 if ($_COOKIE['user']) {
     switch ($_POST['form']) {
         case 'publicate':
-            $article = $articleRow->publicate($title, $categoryId, $text, $img, $user['id'], $today);
+            $article = $articleRow->publicate($title, $categoryId, $text, $img, $user['id']);
             $articleId = $connection->insert_id;
             if ($articleId) {
                 header("Refresh: 3;http://localhost:8081/pages/article.php?id=" . $articleId);
@@ -55,7 +64,7 @@ if ($_COOKIE['user']) {
             if (!$imgName) {
                 $img = $_POST['articleImg'];
             }
-            $article = $articleRow->update($title, $categoryId, $text, $img, $today, $articleId);
+            $article = $articleRow->update($title, $categoryId, $text, $img, $articleId);
 
             header("Refresh: 3;http://localhost:8081/pages/article.php?id=" . $articleId);
 

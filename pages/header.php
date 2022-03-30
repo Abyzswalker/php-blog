@@ -54,6 +54,7 @@
                     <input name="return" value="logout" type="hidden">
                     <button type="submit" name="submit" value="submit" class="nav-link">Log out</button>
                 </form>
+                <div><h3><?= $_COOKIE['user'] ?></h3></div>
             </div>
             <?php
             }
@@ -118,7 +119,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="formPublicate" class="formPublicate" action="../includes/validationPublicate.php" method="post" enctype="multipart/form-data">
+                <form id="formPublicate" class="formPublicate" action="../validationPublicate.php" method="post" enctype="multipart/form-data">
                     <input type="text" class="form-control" name="title" id="articleTitle" placeholder="Title">
                     <textarea type="textarea" class="form-control" name="text" id="articleText" placeholder="Text" style="margin-top: 10px"></textarea>
                     <div id="selectArtCat">
@@ -140,7 +141,7 @@
                     </div>
                     <input class="form-control" type="hidden" name="form" value="publicate">
                     <div class="modal-footer">
-                        <button form="formPublicate" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                         <button id="buttonPublicate" type="submit" name="submit" class="btn btn-primary">Publicate</button>
                     </div>
                 </form>

@@ -1,5 +1,8 @@
 <?php
 
+use Blog\Classes\Users;
+
+require_once __DIR__ . '/vendor/autoload.php';
 require_once 'db.php';
 
 if ($_POST['data']['login'] && $_POST['data']['password']) {
@@ -10,8 +13,8 @@ if ($_POST['data']['login'] && $_POST['data']['password']) {
 
 $msg = [];
 
-
-$user = $usersQuery->checkUser($login);
+$usersRow = new Users($connection);
+$user = $usersRow->checkUser($login);
 
 switch ($_POST['key']) {
     case 'up':
@@ -19,28 +22,28 @@ switch ($_POST['key']) {
             $msg['msg'] = 'User Error';
             echo json_encode($msg);
         } elseif (!$user) {
-            $usersQuery->addUser($login, $pass);
+            $usersRow->addUser($login, $pass);
+            setcookie('user', $login, time() + 3600, '/');
             $msg['msg'] = 'signUp';
             echo json_encode($msg);
         }
         break;
     case 'in':
-        if ($user) {
-            //3600
-            setcookie('user', $user['login'], time() + 3600, '/');
-            $msg['msg'] = 'signIn';
-            echo json_encode($msg);
-        } elseif (!$user) {
-            if (!$user) {
-                $msg['msg'] = 'error';
+        if (!empty($user)) {
+            $validateUser = $usersRow->validateUser($login, $pass);
+
+            if ($validateUser === 'signIn') {
+                setcookie('user', $user['login'], time() + 3600, '/');
+                $msg['msg'] = $validateUser;
+                echo json_encode($msg);
+            } elseif ($validateUser === 'error') {
+                $msg['msg'] = $validateUser;
                 echo json_encode($msg);
             }
         }
         break;
     case 'logout':
-        //var_dump('kuki', $_COOKIE['user']);
         unset($_COOKIE['user']);
         setcookie('user', null, -1, '/');
-    //header("Location: http://blog/index.php");
         break;
 }

@@ -1,12 +1,13 @@
 <?php
 
-require_once 'Database.php';
+namespace Blog\Classes;
+
+use mysqli;
 
 class Users
 {
     private $connection;
-    public $user;
-
+    private $user;
 
     public function __construct(mysqli $connection)
     {
@@ -32,6 +33,21 @@ class Users
         $this->user = $stmt->get_result();
 
         return $this->user->fetch_assoc();
+    }
+
+    public function validateUser($login, $pass)
+    {
+        $stmt = $this->connection->prepare("SELECT login FROM users WHERE `login` = ? && `pass` = ?");
+        $stmt->execute(["$login", $pass]);
+        $result = $stmt->get_result();
+
+        $this->user = $result->fetch_assoc();
+
+        if ($this->user) {
+            return $this->msg = 'signIn';
+        } else {
+            return $this->msg = 'error';
+        }
     }
 
     public function allUsers()

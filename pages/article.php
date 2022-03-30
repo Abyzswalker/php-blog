@@ -1,10 +1,11 @@
 <?php
 
-require_once '../includes/db.php';
+use Blog\Classes\Articles;
+use Blog\Classes\Users;
+use Blog\Classes\Categories;
 
-spl_autoload_register(function ($class_name) {
-    include '../includes/Classes/' . $class_name . '.php';
-});
+require_once __DIR__ . '/../vendor/autoload.php';
+require_once '../db.php';
 
 $articleRow = new Articles($connection);
 $usersRow = new Users($connection);
@@ -73,7 +74,7 @@ if (!$article) {
         if ((!empty($_COOKIE['user'])) && $_COOKIE['user'] == $user['login'])
         {
             ?>
-            <form id="formArticle" class="formArticle" action="../includes/validationPublicate.php" method="post" enctype="multipart/form-data">
+            <form id="formArticle" class="formArticle" action="../validationPublicate.php" method="post" enctype="multipart/form-data">
                 <div class="btn-group">
                     <button type="button" class="btn first" data-bs-toggle="modal" data-bs-target="#ModalUpdate">Update</button>
                     <button type="button" class="btn second" data-bs-toggle="modal" data-bs-target="#ModalDelete">Delete</button>
@@ -102,7 +103,7 @@ if (!$article) {
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="formUpdate" class="formUpdate" action="../includes/validationPublicate.php" method="post" enctype="multipart/form-data">
+                <form id="formUpdate" class="formUpdate" action="../validationPublicate.php" method="post" enctype="multipart/form-data">
                     <input type="text" class="form-control" name="title" id="articleTitle" placeholder="Title" value="<?php echo $article['title'] ?>" required>
                     <textarea type="textarea" class="form-control" name="text" id="articleText" placeholder="Text" style="margin-top: 10px" required>
                         <?php echo trim($article['text']) ?>
@@ -142,7 +143,7 @@ if (!$article) {
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="formDelete" class="formDelete" action="../includes/validationPublicate.php" method="post" enctype="multipart/form-data">
+                <form id="formDelete" class="formDelete" action="../validationPublicate.php" method="post" enctype="multipart/form-data">
                     <label>Удалить статью?</label>
                     <input class="form-control" type="hidden" name="form" value="delete">
                     <input class="form-control" type="hidden" name="articleId" value="<?php echo (int) $article['id'] ?>">

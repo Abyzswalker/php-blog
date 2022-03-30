@@ -1,12 +1,23 @@
 <?php
 
-require_once 'includes/db.php';
+use Blog\Classes\Articles;
+use Blog\Classes\Categories;
+use Blog\Classes\Users;
+
+require_once __DIR__ . '/vendor/autoload.php';
+require_once 'db.php';
 
 $articlesRow = new Articles($connection);
-$allArticles = $articlesRow->allArticles(0, 2);
-$countArticles = $articlesRow->countArticles();
+$usersRow = new Users($connection);
+$articleCategoryRow = new Categories($connection);
 
-$count = ceil($countArticles[0] / 2);
+$allArticles = $articlesRow->allArticles(0, 2);
+
+$countAllArticles = $articlesRow->countArticles();
+$countAll = ceil($countAllArticles[0] / 2);
+
+$allArticleCategory = $articleCategoryRow->allCategory();
+$users = $usersRow->allUsers();
 ?>
 
 <!doctype html>
@@ -80,13 +91,13 @@ if (!isset($_GET['category']) && !isset($_GET['q'])) {
                     </div>
                 </div>
             </article>
+        <?php endforeach; ?>
             </div>
         <?php
-        endforeach;
-        if ($countArticles[0] > 2): ?>
+        if ($countAllArticles[0] > 2): ?>
             <div class="afterPosts" style="text-align: center">
                 <a id="loadMore" type="button" name="loadMore" class="btn btn-outline-secondary loadMore" data-page="1"
-                   data-max="<?php echo $count; ?>">
+                   data-max="<?php echo $countAll; ?>">
                     Load more
                     <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                     <span class="visually-hidden">Loading...</span>
@@ -97,8 +108,10 @@ if (!isset($_GET['category']) && !isset($_GET['q'])) {
     }
 } elseif (!empty($_GET['category'])) {
     $categoryId = $_GET['category'];
-    $articlesOnCategoryRow = new Articles($connection);
-    $articlesOnCategory = $articlesOnCategoryRow->articleOnCategory($categoryId, 0, 2);
+    $articlesOnCategory = $articlesRow->articleOnCategory($categoryId, 0, 2);
+
+    $countCatArticles = $articlesRow->countArticles($categoryId);
+    $countCat = ceil($countCatArticles[0] / 2);
 
     $categoryTitle = '';
 
@@ -160,11 +173,11 @@ if (!isset($_GET['category']) && !isset($_GET['q'])) {
                     </div>
                 </div>
             </article>
+        <?php endforeach; ?>
             </div>
-        <?php endforeach;
-        if ($countArticles[0] > 2): ?>
+        <?php if ($countCatArticles[0] > 2): ?>
         <div class="afterPosts" style="text-align: center">
-            <a id="loadMore" type="button" name="loadMore" class="btn btn-outline-secondary loadMore" data-cat="<?php echo $categoryId; ?>" data-page="1" data-max="<?php echo $count; ?>">
+            <a id="loadMore" type="button" name="loadMore" class="btn btn-outline-secondary loadMore" data-cat="<?php echo $categoryId; ?>" data-page="1" data-max="<?php echo $countCat; ?>">
                 Load more
                 <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                 <span class="visually-hidden">Loading...</span>

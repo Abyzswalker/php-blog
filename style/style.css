@@ -102,6 +102,9 @@ input {
     max-width: 90%;
 }
 
+#searchQuery {
+    margin-bottom: 9px;
+}
 
 /* Combobox */
 

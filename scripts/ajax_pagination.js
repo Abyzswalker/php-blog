@@ -36,7 +36,6 @@ $(document).ready(function () {
         });
 
         $target.attr('data-page', page);
-        console.log(page, $target.attr('data-max'))
         if (page ==  $target.attr('data-max')) {
             $target.hide();
             $('#loadMore').after('<span style="color: red" class="error">Статей не найдено.</span>');

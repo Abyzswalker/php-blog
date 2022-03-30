@@ -1,12 +1,16 @@
 <?php
 
-class Database extends \mysqli
+namespace Blog\Classes;
+
+use mysqli;
+
+class Database
 {
-    public $server;
-    public $username;
-    public $password;
-    public $name;
-    public $connection;
+    private $server;
+    private $username;
+    private $password;
+    private $name;
+    private $connection;
 
     public function __construct ($server, $username, $password, $name)
     {
