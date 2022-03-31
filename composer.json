@@ -9,10 +9,7 @@
         }
     ],
     "minimum-stability": "stable",
-    "require": {
-        "ext-mysqli": "*",
-        "ext-json": "*"
-    },
+    "require": {},
     "autoload": {
         "psr-4": {
             "Blog\\": "src/"
