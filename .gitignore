@@ -4,4 +4,3 @@
 .phpunit.result.cache
 .env
 .discovery
-/config.php
